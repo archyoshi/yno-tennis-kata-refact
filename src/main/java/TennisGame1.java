@@ -62,12 +62,18 @@ public class TennisGame1 implements TennisGame {
     private String afterIntroducingAdvantages() {
         StringBuilder scoreBuilder = new StringBuilder();
         int scoreDifference = m_score1 - m_score2;
-
-        if (scoreDifference == 1) scoreBuilder.append("Advantage player1");
-        else if (scoreDifference == -1) scoreBuilder.append("Advantage player2");
-        else if (scoreDifference >= 2) scoreBuilder.append("Win for player1");
-        else scoreBuilder.append("Win for player2");
+        if (Math.abs(scoreDifference) < 2) {
+            scoreBuilder.append("Advantage ");
+            scoreBuilder.append(getAdvantagedPlayer(scoreDifference));
+        } else {
+            if (scoreDifference >= 2) scoreBuilder.append("Win for player1");
+            else scoreBuilder.append("Win for player2");
+        }
         return scoreBuilder.toString();
+    }
+
+    private String getAdvantagedPlayer(int scoreDifference) {
+        return (scoreDifference == 1) ? "player1" : "player2";
     }
 
     private String whenTie() {
