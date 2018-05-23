@@ -60,13 +60,14 @@ public class TennisGame1 implements TennisGame {
     }
 
     private String afterIntroducingAdvantages() {
-        String score;
-        int minusResult = m_score1 - m_score2;
-        if (minusResult == 1) score = "Advantage player1";
-        else if (minusResult == -1) score = "Advantage player2";
-        else if (minusResult >= 2) score = "Win for player1";
-        else score = "Win for player2";
-        return score;
+        StringBuilder scoreBuilder = new StringBuilder();
+        int scoreDifference = m_score1 - m_score2;
+
+        if (scoreDifference == 1) scoreBuilder.append("Advantage player1");
+        else if (scoreDifference == -1) scoreBuilder.append("Advantage player2");
+        else if (scoreDifference >= 2) scoreBuilder.append("Win for player1");
+        else scoreBuilder.append("Win for player2");
+        return scoreBuilder.toString();
     }
 
     private String whenTie() {
