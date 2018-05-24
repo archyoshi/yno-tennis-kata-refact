@@ -14,58 +14,48 @@ public class TennisGame2 implements TennisGame {
     }
 
     public String getScore() {
-        String score = "";
+        String score;
 
         if (p1point == p2point) {
-            score = scoreWhenTie();
-        }
+            score = scoreWhenTie(p1point);
+        } else {
+            score = initializeScore();
 
-        if ((p1point == 0 || p2point == 0) && (p1point > 0 || p2point > 0)) {
-            p1res = getPlayerResult(p1point);
-            p2res = getPlayerResult(p2point);
-            score = p1res + "-" + p2res;
-        }
+            if (p1point >= 3 && p2point >= 3)
+                score = getScoreWhenAdvantage();
 
-        if (p1point < 4) {
-            if (p1point > p2point) {
-                if (p1point == 2)
-                    p1res = "Thirty";
-                if (p1point == 3)
-                    p1res = "Forty";
-                if (p2point == 1)
-                    p2res = "Fifteen";
-                if (p2point == 2)
-                    p2res = "Thirty";
-                score = p1res + "-" + p2res;
+            if (p1point < 4 && p2point < 4) {
+                return score;
             }
-            if (p2point > p1point) {
-                if (p2point == 2)
-                    p2res = "Thirty";
-                if (p2point == 3)
-                    p2res = "Forty";
-                if (p1point == 1)
-                    p1res = "Fifteen";
-                if (p1point == 2)
-                    p1res = "Thirty";
-                score = p1res + "-" + p2res;
+
+            if (Math.abs(p1point - p2point) >= 2) {
+                score = "Win for " + getHigherScorePlayer();
             }
-        }
-
-        if (p1point > p2point && p2point >= 3) {
-            score = "Advantage player1";
-        }
-
-        if (p2point > p1point && p1point >= 3) {
-            score = "Advantage player2";
-        }
-
-        if (p1point >= 4 && p2point >= 0 && (p1point - p2point) >= 2) {
-            score = "Win for player1";
-        }
-        if (p2point >= 4 && p1point >= 0 && (p2point - p1point) >= 2) {
-            score = "Win for player2";
         }
         return score;
+    }
+
+    private String getScoreWhenAdvantage() {
+        if (Math.abs(p1point - p2point) == 1) {
+            return "Advantage " + getHigherScorePlayer();
+        }
+        return "";
+    }
+
+    private String initializeScore() {
+        String score;
+        p1res = getPlayerResult(p1point);
+        p2res = getPlayerResult(p2point);
+        score = p1res + "-" + p2res;
+        return score;
+    }
+
+    private String getHigherScorePlayer() {
+        if (p1point > p2point) {
+            return "player1";
+        } else {
+            return "player2";
+        }
     }
 
     private String getPlayerResult(int point) {
@@ -80,20 +70,13 @@ public class TennisGame2 implements TennisGame {
         return "";
     }
 
-    private String scoreWhenTie() {
-        String score = "";
-        if (p1point < 4) {
-            if (p1point == 0)
-                score = "Love";
-            if (p1point == 1)
-                score = "Fifteen";
-            if (p1point == 2)
-                score = "Thirty";
-            score += "-All";
+    private String scoreWhenTie(int point) {
+        if (point < 3) {
+            return getPlayerResult(point) + "-" + "All";
+        } else {
+            return "Deuce";
         }
-        if (p1point >= 3)
-            score = "Deuce";
-        return score;
+
     }
 
     public void setP1Score(int number) {
